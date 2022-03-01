@@ -140,20 +140,24 @@ namespace GarconWinApp
         private void ShowMessage(MessageType messageType)
         {
             string msg = string.Empty;
+            string header = string.Empty;
             switch (messageType)
             {
                 case MessageType.Successful:
+                    header = "Success";
                     msg = "Evrything is served! Thank you for your patronage!";
                     break;
                 case MessageType.NoItemChecked:
+                    header = "Error";
                     msg = "Please choose at least one item from the Menu.";
                     break;
                 case MessageType.NoOrderAdded:
+                    header = "Error";
                     msg = "Please add at least one item to your order.";
                     break;
             }
             
-            MessageBox.Show(msg);
+            MessageBox.Show(msg, header);
         }
 
         private void StartPreparation()
