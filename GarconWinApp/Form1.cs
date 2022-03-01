@@ -1,4 +1,5 @@
 using GarconWinApp.Models;
+using System.Text;
 
 namespace GarconWinApp
 {
@@ -6,11 +7,28 @@ namespace GarconWinApp
     {
         List<MenuItem> menuItems = new List<MenuItem>();
         List<OrderItem> OrderItems = new List<OrderItem>();
+        System.Windows.Forms.Timer myTimer;
         decimal TotalOrderPrice = 0;
         public Form1()
         {
             InitializeComponent();
+            ToggleOrderSummary(true);
             PopulateMenuListBox();
+            RecalculateTotal();
+        }
+
+        private void ToggleOrderSummary(bool isHide)
+        {
+            if(isHide)
+            {
+                lblOrderSummary.Hide();
+                lblSummary.Hide();
+            } else
+            {
+                lblOrderSummary.Show();
+                lblSummary.Show();
+            }
+            
         }
 
         private void PopulateMenuListBox()
@@ -20,39 +38,159 @@ namespace GarconWinApp
             ((ListBox)this.clbMenu).DataSource = menuItems;
             ((ListBox)this.clbMenu).DisplayMember = "DisplayMember";
             ((ListBox)this.clbMenu).ValueMember = "MenuItemId";
-
-
+            //Default checked all chef's recommendation
+            for (var i = 0; i <= clbMenu.Items.Count - 1; i++)
+            {
+                if (((MenuItem)clbMenu.Items[i]).IsChefRecommendation)
+                {
+                    clbMenu.SetItemCheckState(i, CheckState.Checked);
+                }
+            }
         }
 
         private void btnAddToOrder_Click(object sender, EventArgs e)
         {
+
             var myOrders = clbMenu.CheckedItems;
-           
-            var menuItemIds = new List<int>();
             foreach (var item in myOrders)
             {
                 OrderItems.Add(new OrderItem((MenuItem)item));
-                TotalOrderPrice += ((MenuItem)item).ItemPrice;
             }
-            for (int i = 0; i < clbMenu.Items.Count; i++)
-            {
-                clbMenu.SetItemChecked(i, false);
-            }
+
+            UpdateOrderItems();
+            UncheckedAllSelectedMenuItem();
+            RecalculateTotal();
+        }
+
+        private void UpdateOrderItems()
+        {
             lbOrder.DataSource = null;
             lbOrder.DataSource = OrderItems;
             lbOrder.DisplayMember = "ItemDisplayMember";
             lbOrder.ValueMember = "OrderItemId";
-            lblTotal.Text = TotalOrderPrice.ToString("0.00");
+
         }
 
-       
         void lbOrder_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            //int index = this.lbOrder.IndexFromPoint(e.Location);
-            //menuOrderItems = menuOrderItems.Where(c => c.MenuItemId.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
-            //lbOrder.DataSource = menuOrderItems;
-
+            OrderItems = OrderItems.Where(c => c.OrderItemId.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
+            RecalculateTotal();
             lbOrder.DataSource = OrderItems;
+        }
+
+        private void RecalculateTotal()
+        {
+            TotalOrderPrice = 0;
+            foreach (var orderItem in OrderItems)
+            {
+                TotalOrderPrice += ((OrderItem)orderItem).Item.ItemPrice;
+            }
+            lblTotal.Text = TotalOrderPrice.ToString("0.00");
+        }
+        private void UncheckedAllSelectedMenuItem()
+        {
+            for (int i = 0; i < clbMenu.Items.Count; i++)
+            {
+                clbMenu.SetItemChecked(i, false);
+            }
+        }
+
+        private void btnConfirmOrder_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Once you click Confirm you can't cancel an order, continue?", "Confirm Order",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                OrderItems.ForEach(c => c.Status = OrderItem.OrderItemStatus.INPREPARATION);
+                UpdateOrderItems();
+                btnConfirmOrder.Enabled = false;
+                StartPreparation();
+            }
+            
+        }
+
+        private void StartPreparation()
+        {
+            foreach(var orderItem in OrderItems)
+            {
+                myTimer = new System.Windows.Forms.Timer();
+                myTimer.Interval = orderItem.Item.prepTimeInMinutes * 1000; //I just sacled it down to seconds for demo purposes not to wait a lot of time.
+             
+                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s,a, orderItem, OrderItem.OrderItemStatus.READYTOSERVE);
+                myTimer.Start();
+
+            }
+        }
+
+        private void MyTimer_Tick(object? sender, EventArgs e, OrderItem orderItem, OrderItem.OrderItemStatus orderItemStatus)
+        {
+            if(sender!=null)
+            {
+               
+                orderItem.Status = orderItemStatus;
+                ((System.Windows.Forms.Timer)sender).Stop();
+            }
+
+            UpdateOrderItems();
+
+            //for simulation purposes to complete / served
+            if (orderItemStatus != OrderItem.OrderItemStatus.SERVED)
+            {
+                myTimer = new System.Windows.Forms.Timer();
+                myTimer.Interval = orderItem.Item.prepTimeInMinutes * 500;
+                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s, a, orderItem, OrderItem.OrderItemStatus.SERVED);
+                myTimer.Start();
+              
+            } else
+            {
+                CheckAllOrdersForSummary();
+            }
+            
+        }
+
+        private void CheckAllOrdersForSummary()
+        {
+            var hasUnservedOrders = OrderItems.Any(c => c.Status != OrderItem.OrderItemStatus.SERVED);
+            if (!hasUnservedOrders)
+            {
+              
+                ShowBillOutOption();
+                ResetAll();
+            }
+        }
+
+        private void ResetAll()
+        {
+            UncheckedAllSelectedMenuItem();
+            OrderItems.Clear();
+            lblTotal.Text = "0.00";
+            btnConfirmOrder.Enabled = true;
+            UpdateOrderItems();
+        }
+
+        private void ShowBillOutOption()
+        {
+            ToggleOrderSummary(false);
+
+            
+            decimal grandTotalPrice = 0;
+            decimal grandTotalTax = 0;
+            lblSummary.Text = string.Empty;
+            StringBuilder sbText = new StringBuilder();
+          
+            foreach (var orderItem in OrderItems)
+            {
+                sbText.Append(orderItem.OrderItemSummaryDisplayMember + Environment.NewLine);
+                grandTotalPrice += orderItem.Item.ItemPrice;
+                grandTotalTax += orderItem.Item.ItemTax;
+            }
+            sbText.Append("--------------" + Environment.NewLine);
+
+            sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
+            sbText.Append("Total Tax : " + grandTotalTax + Environment.NewLine);
+            sbText.Append("Grand Total : " + (grandTotalPrice + grandTotalTax).ToString("0.00"));
+            lblSummary.Text = sbText.ToString();
+            
         }
     }
 }

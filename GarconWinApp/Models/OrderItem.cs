@@ -14,7 +14,9 @@ namespace GarconWinApp.Models
         public int OrderItemId { get; private set; }
 
         public MenuItem Item { get; set; }
-        public string ItemDisplayMember { get { return Item.DisplayMember; } }
+        public string ItemDisplayMember { get { return Item.Name + " - " + Item.ItemPrice + " - " + Status.ToString(); } }
+        public string OrderItemSummaryDisplayMember { get { return Item.Name + " - " + Item.ItemPrice + " - " + Item.ItemTax; } }
+
         public OrderItemStatus Status { get; set; }
 
         public enum OrderItemStatus
