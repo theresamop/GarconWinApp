@@ -1,3 +1,4 @@
+using GarconWinApp.Enums;
 using GarconWinApp.Models;
 using System.Text;
 
@@ -5,10 +6,11 @@ namespace GarconWinApp
 {
     public partial class Form1 : Form
     {
-        List<MenuItem> menuItems = new List<MenuItem>();
-        List<OrderItem> OrderItems = new List<OrderItem>();
-        System.Windows.Forms.Timer myTimer;
-        decimal TotalOrderPrice = 0;
+        private List<MenuItem> menuItems = new List<MenuItem>();
+        private List<OrderItem> OrderItems = new List<OrderItem>();
+        private System.Windows.Forms.Timer? myTimer;
+        private decimal TotalOrderPrice = 0;
+        private bool isConfirmed;
         public Form1()
         {
             InitializeComponent();
@@ -19,7 +21,8 @@ namespace GarconWinApp
 
         private void ToggleOrderSummary(bool isHide)
         {
-            if(isHide)
+           
+            if (isHide)
             {
                 lblOrderSummary.Hide();
                 lblSummary.Hide();
@@ -37,7 +40,7 @@ namespace GarconWinApp
             menuItems = SeedData.PopulateMenu();
             ((ListBox)this.clbMenu).DataSource = menuItems;
             ((ListBox)this.clbMenu).DisplayMember = "DisplayMember";
-            ((ListBox)this.clbMenu).ValueMember = "MenuItemId";
+            ((ListBox)this.clbMenu).ValueMember = "Id";
             //Default checked all chef's recommendation
             for (var i = 0; i <= clbMenu.Items.Count - 1; i++)
             {
@@ -50,32 +53,42 @@ namespace GarconWinApp
 
         private void btnAddToOrder_Click(object sender, EventArgs e)
         {
-
-            var myOrders = clbMenu.CheckedItems;
-            foreach (var item in myOrders)
+            isConfirmed = false;
+            if(ValidateForm(true))
             {
-                OrderItems.Add(new OrderItem((MenuItem)item));
+                var myOrders = clbMenu.CheckedItems;
+                foreach (var item in myOrders)
+                {
+                    OrderItems.Add(new OrderItem((MenuItem)item));
+                }
+                ToggleOrderSummary(true);
+                UpdateOrderItems();
+                UncheckedAllSelectedMenuItem();
+                RecalculateTotal();
+            } else
+            {
+                ShowMessage(MessageType.NoItemChecked);
             }
-
-            UpdateOrderItems();
-            UncheckedAllSelectedMenuItem();
-            RecalculateTotal();
+            
         }
 
         private void UpdateOrderItems()
         {
             lbOrder.DataSource = null;
             lbOrder.DataSource = OrderItems;
-            lbOrder.DisplayMember = "ItemDisplayMember";
-            lbOrder.ValueMember = "OrderItemId";
+            lbOrder.DisplayMember = "DisplayMember";
+            lbOrder.ValueMember = "Id";
 
         }
 
         void lbOrder_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            OrderItems = OrderItems.Where(c => c.OrderItemId.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
-            RecalculateTotal();
-            lbOrder.DataSource = OrderItems;
+            if (!isConfirmed)
+            {
+                OrderItems = OrderItems.Where(c => c.Id.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
+                RecalculateTotal();
+                lbOrder.DataSource = OrderItems;
+            }
         }
 
         private void RecalculateTotal()
@@ -97,16 +110,50 @@ namespace GarconWinApp
 
         private void btnConfirmOrder_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Once you click Confirm you can't cancel an order, continue?", "Confirm Order",
-                                     MessageBoxButtons.YesNo);
-            if (confirmResult == DialogResult.Yes)
+            if(ValidateForm())
             {
-                OrderItems.ForEach(c => c.Status = OrderItem.OrderItemStatus.INPREPARATION);
-                UpdateOrderItems();
-                btnConfirmOrder.Enabled = false;
-                StartPreparation();
+                var confirmResult = MessageBox.Show("Once you click Confirm you can't cancel an order, continue?", "Confirm Order",
+                                        MessageBoxButtons.YesNo);
+                if (confirmResult == DialogResult.Yes)
+                {
+                    isConfirmed = true;
+                    OrderItems.ForEach(c => c.Status = OrderItemStatus.INPREPARATION);
+                    UpdateOrderItems();
+                    btnConfirmOrder.Enabled = false;
+                    StartPreparation();
+                }
+            } else
+            {
+                ShowMessage(MessageType.NoOrderAdded);
             }
             
+            
+            
+        }
+
+        private bool ValidateForm(bool isMenuChecking=false)
+        {
+             
+            return isMenuChecking ? clbMenu.CheckedItems.Count>0 :  OrderItems.Any();
+            
+        }
+        private void ShowMessage(MessageType messageType)
+        {
+            string msg = string.Empty;
+            switch (messageType)
+            {
+                case MessageType.Successful:
+                    msg = "Evrything is served! Thank you for your patronage!";
+                    break;
+                case MessageType.NoItemChecked:
+                    msg = "Please choose at least one item from the Menu.";
+                    break;
+                case MessageType.NoOrderAdded:
+                    msg = "Please add at least one item to your order.";
+                    break;
+            }
+            
+            MessageBox.Show(msg);
         }
 
         private void StartPreparation()
@@ -114,15 +161,15 @@ namespace GarconWinApp
             foreach(var orderItem in OrderItems)
             {
                 myTimer = new System.Windows.Forms.Timer();
-                myTimer.Interval = orderItem.Item.prepTimeInMinutes * 1000; //I just sacled it down to seconds for demo purposes not to wait a lot of time.
+                myTimer.Interval = orderItem.Item.PrepTimeInMinutes * 1000; //I just sacled it down to seconds for demo purposes not to wait a lot of time.
              
-                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s,a, orderItem, OrderItem.OrderItemStatus.READYTOSERVE);
+                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s,a, orderItem, OrderItemStatus.READYTOSERVE);
                 myTimer.Start();
 
             }
         }
 
-        private void MyTimer_Tick(object? sender, EventArgs e, OrderItem orderItem, OrderItem.OrderItemStatus orderItemStatus)
+        private void MyTimer_Tick(object? sender, EventArgs e, OrderItem orderItem, OrderItemStatus orderItemStatus)
         {
             if(sender!=null)
             {
@@ -134,11 +181,11 @@ namespace GarconWinApp
             UpdateOrderItems();
 
             //for simulation purposes to complete / served
-            if (orderItemStatus != OrderItem.OrderItemStatus.SERVED)
+            if (orderItemStatus != OrderItemStatus.SERVED)
             {
                 myTimer = new System.Windows.Forms.Timer();
-                myTimer.Interval = orderItem.Item.prepTimeInMinutes * 500;
-                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s, a, orderItem, OrderItem.OrderItemStatus.SERVED);
+                myTimer.Interval = orderItem.Item.PrepTimeInMinutes * 500;
+                myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s, a, orderItem, OrderItemStatus.SERVED);
                 myTimer.Start();
               
             } else
@@ -150,11 +197,12 @@ namespace GarconWinApp
 
         private void CheckAllOrdersForSummary()
         {
-            var hasUnservedOrders = OrderItems.Any(c => c.Status != OrderItem.OrderItemStatus.SERVED);
+            var hasUnservedOrders = OrderItems.Any(c => c.Status != OrderItemStatus.SERVED);
             if (!hasUnservedOrders)
             {
               
                 ShowBillOutOption();
+                ShowMessage(MessageType.Successful);
                 ResetAll();
             }
         }
@@ -182,7 +230,7 @@ namespace GarconWinApp
             {
                 sbText.Append(orderItem.OrderItemSummaryDisplayMember + Environment.NewLine);
                 grandTotalPrice += orderItem.Item.ItemPrice;
-                grandTotalTax += orderItem.Item.ItemTax;
+                grandTotalTax += orderItem.GetTax();
             }
             sbText.Append("--------------" + Environment.NewLine);
 

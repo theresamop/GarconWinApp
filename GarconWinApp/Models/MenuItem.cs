@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GarconWinApp.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,45 +7,32 @@ using System.Threading.Tasks;
 
 namespace GarconWinApp.Models
 {
-    public class MenuItem
+    public class MenuItem: IGarcon
     {
-        public int MenuItemId { get; set; }
-
-        public string? Name { get; set; } = null;
-
-        public string? Description { get; set; } =  string.Empty;
-
-        public MenuType MenuItemType { get; set; } = MenuType.MAINCOURSE;
-
-        public decimal ItemPrice { get; set; } = decimal.Zero;
-        public decimal ItemTax { get { return (ItemPrice * 10)/100;  } }
-        public int prepTimeInMinutes { get; set; } = 0;
-
-        public bool IsAvailability { get; set; } = false;
-
-        public bool IsChefRecommendation { get; set ; } = true;
-
-        public enum MenuType
-        {
-            APPETIZER,
-            MAINCOURSE,
-            DESSERT,
-            DRINKS,
-            OTHERMENU
-
-        }
-
-        public string Recommended
-        { 
-            get { return IsChefRecommendation ? "*" : ""; }
         
-        }
-
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
         public string DisplayMember
         {
-            get { return String.Format("{0} : {1} - ({2}) {3} mins cook time", MenuItemType.ToString(), Name, ItemPrice.ToString(), prepTimeInMinutes); }
-            
+            get { return string.Format("{0} : {1} - ({2}) {3} mins cook time", MenuItemType.ToString(), Name, ItemPrice.ToString(), PrepTimeInMinutes); }
+
         }
 
+        private MenuType _menuItemType = MenuType.MAINCOURSE;
+        private decimal _itemTax = 10;
+        private decimal _itemPrice;
+        private int _prepTimeInMinutes = 0;
+
+        private bool _isAvailability = false;
+
+        private bool isChefRecommendation = true;
+        public MenuType MenuItemType { get => _menuItemType; set => _menuItemType = value; }
+        public decimal ItemPrice { get => _itemPrice; set => _itemPrice = value; }
+        public decimal ItemTax { get => _itemTax; set => _itemTax = value; }
+        public int PrepTimeInMinutes { get => _prepTimeInMinutes; set => _prepTimeInMinutes = value; }
+        public bool IsAvailability { get => _isAvailability; set => _isAvailability = value; }
+        public bool IsChefRecommendation { get => isChefRecommendation; set => isChefRecommendation = value; }
     }
+    
 }

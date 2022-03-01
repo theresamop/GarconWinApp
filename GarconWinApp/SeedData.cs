@@ -1,4 +1,5 @@
-﻿using GarconWinApp.Models;
+﻿using GarconWinApp.Enums;
+using GarconWinApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,38 +14,38 @@ namespace GarconWinApp
 
         public static readonly MenuItem MC1 = new MenuItem()
         {
-            MenuItemId = 1,
+            Id = 1,
             Description = "Meat Dish (beef) with peanut sauce",
             IsAvailability = true,
             IsChefRecommendation = false,
             ItemPrice = 200,
-            MenuItemType = MenuItem.MenuType.MAINCOURSE,
+            MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Kare Kare",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem MC2 = new MenuItem()
         {
-            MenuItemId = 2,
+            Id = 2,
             Description = "Soup Dish",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 270,
-            MenuItemType = MenuItem.MenuType.MAINCOURSE,
+            MenuItemType = MenuType.MAINCOURSE,
             Name = "Pork Sinigang",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem MC3 = new MenuItem()
         {
-            MenuItemId = 3,
+            Id = 3,
             Description = "Soup dish",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 300,
-            MenuItemType = MenuItem.MenuType.MAINCOURSE,
+            MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Bulalo",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         #endregion
@@ -54,38 +55,38 @@ namespace GarconWinApp
 
         public static readonly MenuItem AP1 = new MenuItem()
         {
-            MenuItemId = 4,
+            Id = 4,
             Description = "Fried Potatos",
             IsAvailability = true,
             IsChefRecommendation = false,
             ItemPrice = 100,
-            MenuItemType = MenuItem.MenuType.APPETIZER,
+            MenuItemType = MenuType.APPETIZER,
             Name = "French Fries",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem AP2 = new MenuItem()
         {
-            MenuItemId = 5,
+            Id = 5,
             Description = "Nacho with beef, salsa and cheese",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 270,
-            MenuItemType = MenuItem.MenuType.APPETIZER,
+            MenuItemType = MenuType.APPETIZER,
             Name = "Beef Nachos",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem AP3 = new MenuItem()
         {
-            MenuItemId = 6,
+            Id = 6,
             Description = "Fried squid rings",
             IsAvailability = true,
             IsChefRecommendation = false,
             ItemPrice = 300,
-            MenuItemType = MenuItem.MenuType.APPETIZER,
+            MenuItemType = MenuType.APPETIZER,
             Name = "Calamares",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         #endregion
@@ -95,38 +96,38 @@ namespace GarconWinApp
 
         public static readonly MenuItem DR1 = new MenuItem()
         {
-            MenuItemId = 7,
+            Id = 7,
             Description = "with sago and gulaman",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 50,
-            MenuItemType = MenuItem.MenuType.DRINKS,
+            MenuItemType = MenuType.DRINKS,
             Name = "Sago't Gulaman",
-            prepTimeInMinutes = 5
+            PrepTimeInMinutes = 5
         };
 
         public static readonly MenuItem DR2 = new MenuItem()
         {
-            MenuItemId = 8,
+            Id = 8,
             Description = "Carbonated drink",
             IsAvailability = true,
             IsChefRecommendation = false,
             ItemPrice = 50,
-            MenuItemType = MenuItem.MenuType.DRINKS,
+            MenuItemType = MenuType.DRINKS,
             Name = "SoftDrinks",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem DR3 = new MenuItem()
         {
-            MenuItemId = 9,
+            Id = 9,
             Description = "House blend iced tea",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 60,
-            MenuItemType = MenuItem.MenuType.DRINKS,
+            MenuItemType = MenuType.DRINKS,
             Name = "Iced Tea",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         #endregion
@@ -136,38 +137,38 @@ namespace GarconWinApp
 
         public static readonly MenuItem DS1 = new MenuItem()
         {
-            MenuItemId = 10,
+            Id = 10,
             Description = "Cheese cake",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 150,
-            MenuItemType = MenuItem.MenuType.DESSERT,
+            MenuItemType = MenuType.DESSERT,
             Name = "New York Cheese Cake",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem DS2 = new MenuItem()
         {
-            MenuItemId = 11,
+            Id = 11,
             Description = "Sweet flan made of milk and egg",
             IsAvailability = true,
             IsChefRecommendation = false,
             ItemPrice = 120,
-            MenuItemType = MenuItem.MenuType.DESSERT,
+            MenuItemType = MenuType.DESSERT,
             Name = "Leche Flan",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem DS3 = new MenuItem()
         {
-            MenuItemId = 12,
+            Id = 12,
             Description = "Sweet blend of diffent ingredients",
             IsAvailability = true,
             IsChefRecommendation = true,
             ItemPrice = 160,
-            MenuItemType = MenuItem.MenuType.DESSERT,
+            MenuItemType = MenuType.DESSERT,
             Name = "Halo Halo",
-            prepTimeInMinutes = 3
+            PrepTimeInMinutes = 3
         };
 
         #endregion

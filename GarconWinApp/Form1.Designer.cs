@@ -126,8 +126,12 @@
             // 
             // lblSummary
             // 
+            this.lblSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSummary.AutoSize = true;
             this.lblSummary.Location = new System.Drawing.Point(46, 596);
+            this.lblSummary.Margin = new System.Windows.Forms.Padding(3, 5, 3, 20);
             this.lblSummary.Name = "lblSummary";
             this.lblSummary.Size = new System.Drawing.Size(50, 20);
             this.lblSummary.TabIndex = 10;
@@ -135,8 +139,7 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(665, 797);
             this.Controls.Add(this.lblSummary);
             this.Controls.Add(this.lblOrderSummary);
