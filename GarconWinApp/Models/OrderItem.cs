@@ -16,7 +16,6 @@ namespace GarconWinApp.Models
         private MenuItem _item = new MenuItem();
         public string DisplayMember {  get { return Item.Name + " - " + Item.ItemPrice + " - " + Status.ToString(); } }
 
-        // public string ItemDisplayMember { get { return Item.Name + " - " + Item.ItemPrice + " - " + Status.ToString(); } }
         public string OrderItemSummaryDisplayMember { get { return Item.Name + " - " + Item.ItemPrice + " - " + Item.ItemTax; } }
         
         public int Id { get => _id; set => _id = value; }
