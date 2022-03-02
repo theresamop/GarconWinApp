@@ -49,7 +49,7 @@ namespace GarconWinApp.Services
                 grandTotalTax += orderItem.GetTax();
             }
             var svcCharge = (grandTotalPrice * 5) / 100;
-            sbText.Append("--------------" + Environment.NewLine);
+            sbText.Append("--------------------------" + Environment.NewLine);
 
             sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
             sbText.Append("Service Charge (5%): " + svcCharge.ToString("0.00") + Environment.NewLine);
