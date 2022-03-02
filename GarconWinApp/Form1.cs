@@ -1,5 +1,6 @@
 using GarconWinApp.Enums;
 using GarconWinApp.Models;
+using GarconWinApp.Services;
 using System.Text;
 
 namespace GarconWinApp
@@ -11,6 +12,8 @@ namespace GarconWinApp
         private System.Windows.Forms.Timer? myTimer;
         private decimal TotalOrderPrice = 0;
         private bool isConfirmed;
+        private MenuService menuService = new MenuService();
+        private OrderService orderService = new OrderService();
         public Form1()
         {
             InitializeComponent();
@@ -36,8 +39,8 @@ namespace GarconWinApp
 
         private void PopulateMenuListBox()
         {
-            menuItems = new List<MenuItem>();
-            menuItems = SeedData.PopulateMenu();
+
+            menuItems = menuService.GetItems();
             ((ListBox)this.clbMenu).DataSource = menuItems;
             ((ListBox)this.clbMenu).DisplayMember = "DisplayMember";
             ((ListBox)this.clbMenu).ValueMember = "Id";
@@ -59,7 +62,8 @@ namespace GarconWinApp
                 var myOrders = clbMenu.CheckedItems;
                 foreach (var item in myOrders)
                 {
-                    OrderItems.Add(new OrderItem((MenuItem)item));
+                    orderService.AddItem(new OrderItem((MenuItem)item));
+                    OrderItems = orderService.GetItems();
                 }
                 ToggleOrderSummary(true);
                 UpdateOrderItems();
@@ -74,6 +78,7 @@ namespace GarconWinApp
 
         private void UpdateOrderItems()
         {
+            OrderItems = orderService.GetItems();
             lbOrder.DataSource = null;
             lbOrder.DataSource = OrderItems;
             lbOrder.DisplayMember = "DisplayMember";
@@ -85,7 +90,9 @@ namespace GarconWinApp
         {
             if (!isConfirmed)
             {
-                OrderItems = OrderItems.Where(c => c.Id.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
+                //OrderItems = OrderItems.Where(c => c.Id.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
+                orderService.RemoveItem((int)((ListBox)sender).SelectedValue);
+                UpdateOrderItems();
                 RecalculateTotal();
                 lbOrder.DataSource = OrderItems;
             }
@@ -117,7 +124,7 @@ namespace GarconWinApp
                 if (confirmResult == DialogResult.Yes)
                 {
                     isConfirmed = true;
-                    OrderItems.ForEach(c => c.Status = OrderItemStatus.INPREPARATION);
+                    orderService.ChangeStatus(OrderItemStatus.INPREPARATION);
                     UpdateOrderItems();
                     btnConfirmOrder.Enabled = false;
                     StartPreparation();
@@ -126,9 +133,7 @@ namespace GarconWinApp
             {
                 ShowMessage(MessageType.NoOrderAdded);
             }
-            
-            
-            
+
         }
 
         private bool ValidateForm(bool isMenuChecking=false)

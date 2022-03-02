@@ -1,45 +1,38 @@
-﻿using GarconWinApp.Models;
+﻿using GarconWinApp.Enums;
+using GarconWinApp.Models;
 
 namespace GarconWinApp.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService : BaseServiceClass<OrderItem>
     {
-        public async Task<OrderItem> AddItemAsync(MenuItem menuItem)
+        List<OrderItem> items = new List<OrderItem>();
+      
+        public override void AddItem(OrderItem orderItem)
         {
-            var newOrder = new OrderItem(menuItem);
-
-            await Task.Delay(60000);
-
-            return newOrder;
+            items.Add(orderItem);
+        }
+       
+        public override OrderItem? GetItem(int Id)
+        {
+           return items.Where(c=> c.Id == Id).FirstOrDefault();
         }
 
-        public void CancelItem(int orderitemId)
+        public override List<OrderItem> GetItems()
         {
-            throw new NotImplementedException();
+            return items;
         }
 
-        public void RemoveItem(int orderitemId)
+        public override void RemoveItem(int Id)
         {
-            throw new NotImplementedException();
+            items = items.Where(c => c.Id != Id).ToList();
         }
 
-        public List<CustomerOrderDTO> ViewCurrentOrders(List<OrderItem> item)
+        public void ChangeStatus(OrderItemStatus orderItemStatus)
         {
-            throw new NotImplementedException();
+            items.ForEach(c => c.Status = orderItemStatus);
         }
 
-        public List<OrderSummary> ViewOrderSummary()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public List<OrderSummary> BillOut()
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<MenuItem> GetMenuItemById(int Id)
+        public override void Validate()
         {
             throw new NotImplementedException();
         }
