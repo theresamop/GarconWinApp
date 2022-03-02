@@ -90,7 +90,6 @@ namespace GarconWinApp
         {
             if (!isConfirmed)
             {
-                //OrderItems = OrderItems.Where(c => c.Id.ToString() != ((ListBox)sender).SelectedValue.ToString()).ToList();
                 orderService.RemoveItem((int)((ListBox)sender).SelectedValue);
                 UpdateOrderItems();
                 RecalculateTotal();
@@ -170,7 +169,7 @@ namespace GarconWinApp
             foreach(var orderItem in OrderItems)
             {
                 myTimer = new System.Windows.Forms.Timer();
-                myTimer.Interval = orderItem.Item.PrepTimeInMinutes * 1000; //I just sacled it down to seconds for demo purposes not to wait a lot of time.
+                myTimer.Interval = orderItem.Item.PrepTimeInMinutes * 1000; //I just scaled it down to seconds for demo purposes not to wait a lot of time. there supposed to be client portal where they notify if ready na but since wala ganito muna
              
                 myTimer.Tick += (object? s, EventArgs a) => MyTimer_Tick(s,a, orderItem, OrderItemStatus.READYTOSERVE);
                 myTimer.Start();
