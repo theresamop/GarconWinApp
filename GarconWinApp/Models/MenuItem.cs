@@ -15,7 +15,7 @@ namespace GarconWinApp.Models
         public string Description { get; set; } = string.Empty;
         public string DisplayMember
         {
-            get { return string.Format("{0} : {1} - ({2}) {3} mins cook time", MenuItemType.ToString(), Name, ItemPrice.ToString(), PrepTimeInMinutes); }
+            get { return string.Format("{0} {1} : {2} - ({3}) {4} mins cook time", IsChefRecommendation ? "*" : "", MenuItemType.ToString(), Name, ItemPrice.ToString(), PrepTimeInMinutes); }
 
         }
 

@@ -21,7 +21,8 @@ namespace GarconWinApp
             ItemPrice = 200,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Kare Kare",
-            PrepTimeInMinutes = 3
+            PrepTimeInMinutes = 3,
+            ItemTax = 12
         };
 
         public static readonly MenuItem MC2 = new MenuItem()
@@ -33,7 +34,8 @@ namespace GarconWinApp
             ItemPrice = 270,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Pork Sinigang",
-            PrepTimeInMinutes = 3
+            PrepTimeInMinutes = 3,
+            ItemTax = 12
         };
 
         public static readonly MenuItem MC3 = new MenuItem()
@@ -45,7 +47,7 @@ namespace GarconWinApp
             ItemPrice = 300,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Bulalo",
-            PrepTimeInMinutes = 3
+            PrepTimeInMinutes = 1
         };
 
         #endregion
@@ -62,7 +64,8 @@ namespace GarconWinApp
             ItemPrice = 100,
             MenuItemType = MenuType.APPETIZER,
             Name = "French Fries",
-            PrepTimeInMinutes = 3
+            PrepTimeInMinutes = 1,
+            ItemTax = 8
         };
 
         public static readonly MenuItem AP2 = new MenuItem()
@@ -71,7 +74,7 @@ namespace GarconWinApp
             Description = "Nacho with beef, salsa and cheese",
             IsAvailability = true,
             IsChefRecommendation = true,
-            ItemPrice = 270,
+            ItemPrice = 277.90m,
             MenuItemType = MenuType.APPETIZER,
             Name = "Beef Nachos",
             PrepTimeInMinutes = 3
@@ -83,7 +86,7 @@ namespace GarconWinApp
             Description = "Fried squid rings",
             IsAvailability = true,
             IsChefRecommendation = false,
-            ItemPrice = 300,
+            ItemPrice = 300.50m,
             MenuItemType = MenuType.APPETIZER,
             Name = "Calamares",
             PrepTimeInMinutes = 3
@@ -177,18 +180,7 @@ namespace GarconWinApp
         public static List<MenuItem> PopulateMenu(List<MenuItem> menuitems)
         {
 
-            //foreach (var item in dbContext.OrderItems)
-            //{
-            //    dbContext.Remove(item);
-            //}
-
-            //foreach (var item in dbContext.Orders)
-            //{
-            //    dbContext.Remove(item);
-            //}
-
-            //dbContext.SaveChanges();
-
+           
             //Main Courses
             menuitems.Add(MC1);
             menuitems.Add(MC2);
@@ -209,12 +201,7 @@ namespace GarconWinApp
             menuitems.Add(DS2);
             menuitems.Add(DS3);
 
-            //dbContext.OrderItems.Add(OrderItem1);
-            //dbContext.Orders.Add(Order1);
-
-            //Order1.OrderItems.Add(OrderItem1);
-
-            //dbContext.SaveChanges();
+           
 
             return menuitems;
         }

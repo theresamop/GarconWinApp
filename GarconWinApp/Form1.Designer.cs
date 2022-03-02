@@ -45,9 +45,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(24, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(353, 20);
+            this.label1.Size = new System.Drawing.Size(237, 20);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Menu (Selected items are Chef\'s Recommendations)";
+            this.label1.Text = "Menu (* Chef\'s Recommendations)";
             // 
             // clbMenu
             // 
@@ -140,7 +140,9 @@
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(665, 797);
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(664, 681);
             this.Controls.Add(this.lblSummary);
             this.Controls.Add(this.lblOrderSummary);
             this.Controls.Add(this.btnConfirmOrder);
@@ -152,7 +154,7 @@
             this.Controls.Add(this.clbMenu);
             this.Controls.Add(this.label1);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Garcon";
             this.ResumeLayout(false);
             this.PerformLayout();
 

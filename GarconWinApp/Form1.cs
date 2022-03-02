@@ -44,14 +44,14 @@ namespace GarconWinApp
             ((ListBox)this.clbMenu).DataSource = menuItems;
             ((ListBox)this.clbMenu).DisplayMember = "DisplayMember";
             ((ListBox)this.clbMenu).ValueMember = "Id";
-            //Default checked all chef's recommendation
-            for (var i = 0; i <= clbMenu.Items.Count - 1; i++)
-            {
-                if (((MenuItem)clbMenu.Items[i]).IsChefRecommendation)
-                {
-                    clbMenu.SetItemCheckState(i, CheckState.Checked);
-                }
-            }
+            ////Default checked all chef's recommendation
+            //for (var i = 0; i <= clbMenu.Items.Count - 1; i++)
+            //{
+            //    if (((MenuItem)clbMenu.Items[i]).IsChefRecommendation)
+            //    {
+            //        clbMenu.SetItemCheckState(i, CheckState.Checked);
+            //    }
+            //}
         }
 
         private void btnAddToOrder_Click(object sender, EventArgs e)
@@ -233,18 +233,20 @@ namespace GarconWinApp
             decimal grandTotalTax = 0;
             lblSummary.Text = string.Empty;
             StringBuilder sbText = new StringBuilder();
-          
+            
             foreach (var orderItem in OrderItems)
             {
                 sbText.Append(orderItem.OrderItemSummaryDisplayMember + Environment.NewLine);
                 grandTotalPrice += orderItem.Item.ItemPrice;
                 grandTotalTax += orderItem.GetTax();
             }
+            var svcCharge = (grandTotalPrice * 5)/100;
             sbText.Append("--------------" + Environment.NewLine);
 
             sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
-            sbText.Append("Total Tax : " + grandTotalTax + Environment.NewLine);
-            sbText.Append("Grand Total : " + (grandTotalPrice + grandTotalTax).ToString("0.00"));
+            sbText.Append("Service Charge (5%): " + svcCharge.ToString("0.00") + Environment.NewLine);
+            sbText.Append("Total Tax: " + grandTotalTax + Environment.NewLine);
+            sbText.Append("Grand Total: " + (grandTotalPrice + grandTotalTax).ToString("0.00"));
             lblSummary.Text = sbText.ToString();
             
         }
