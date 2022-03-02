@@ -227,28 +227,10 @@ namespace GarconWinApp
         private void ShowBillOutOption()
         {
             ToggleOrderSummary(false);
-
-            
-            decimal grandTotalPrice = 0;
-            decimal grandTotalTax = 0;
             lblSummary.Text = string.Empty;
-            StringBuilder sbText = new StringBuilder();
-            
-            foreach (var orderItem in OrderItems)
-            {
-                sbText.Append(orderItem.OrderItemSummaryDisplayMember + Environment.NewLine);
-                grandTotalPrice += orderItem.Item.ItemPrice;
-                grandTotalTax += orderItem.GetTax();
-            }
-            var svcCharge = (grandTotalPrice * 5)/100;
-            sbText.Append("--------------" + Environment.NewLine);
+            lblSummary.Text = orderService.CalculateOrderSummary();
 
-            sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
-            sbText.Append("Service Charge (5%): " + svcCharge.ToString("0.00") + Environment.NewLine);
-            sbText.Append("Total Tax: " + grandTotalTax + Environment.NewLine);
-            sbText.Append("Grand Total: " + (grandTotalPrice + grandTotalTax).ToString("0.00"));
-            lblSummary.Text = sbText.ToString();
-            
+
         }
     }
 }
