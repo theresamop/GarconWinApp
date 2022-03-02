@@ -36,8 +36,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblTotal = new System.Windows.Forms.Label();
             this.btnConfirmOrder = new System.Windows.Forms.Button();
-            this.lblOrderSummary = new System.Windows.Forms.Label();
-            this.lblSummary = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lbOrderHistory = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -115,36 +115,35 @@
             this.btnConfirmOrder.UseVisualStyleBackColor = true;
             this.btnConfirmOrder.Click += new System.EventHandler(this.btnConfirmOrder_Click);
             // 
-            // lblOrderSummary
+            // label4
             // 
-            this.lblOrderSummary.AutoSize = true;
-            this.lblOrderSummary.Location = new System.Drawing.Point(30, 555);
-            this.lblOrderSummary.Name = "lblOrderSummary";
-            this.lblOrderSummary.Size = new System.Drawing.Size(132, 20);
-            this.lblOrderSummary.TabIndex = 9;
-            this.lblOrderSummary.Text = "ORDER SUMMARY";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(25, 567);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(119, 20);
+            this.label4.TabIndex = 11;
+            this.label4.Text = "ORDER HISTORY";
             // 
-            // lblSummary
+            // lbOrderHistory
             // 
-            this.lblSummary.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lbOrderHistory.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblSummary.AutoSize = true;
-            this.lblSummary.Location = new System.Drawing.Point(46, 596);
-            this.lblSummary.Margin = new System.Windows.Forms.Padding(3, 5, 3, 20);
-            this.lblSummary.Name = "lblSummary";
-            this.lblSummary.Size = new System.Drawing.Size(50, 20);
-            this.lblSummary.TabIndex = 10;
-            this.lblSummary.Text = "label4";
+            this.lbOrderHistory.FormattingEnabled = true;
+            this.lbOrderHistory.ItemHeight = 20;
+            this.lbOrderHistory.Location = new System.Drawing.Point(25, 606);
+            this.lbOrderHistory.Name = "lbOrderHistory";
+            this.lbOrderHistory.Size = new System.Drawing.Size(597, 104);
+            this.lbOrderHistory.TabIndex = 12;
             // 
             // Form1
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(664, 681);
-            this.Controls.Add(this.lblSummary);
-            this.Controls.Add(this.lblOrderSummary);
+            this.ClientSize = new System.Drawing.Size(664, 885);
+            this.Controls.Add(this.lbOrderHistory);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.btnConfirmOrder);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.label3);
@@ -170,7 +169,7 @@
         private Label label3;
         private Label lblTotal;
         private Button btnConfirmOrder;
-        private Label lblOrderSummary;
-        private Label lblSummary;
+        private Label label4;
+        private ListBox lbOrderHistory;
     }
 }

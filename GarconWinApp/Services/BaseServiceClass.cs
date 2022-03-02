@@ -13,7 +13,7 @@ namespace GarconWinApp.Services
         public abstract void RemoveItem(int Id);
         public abstract T? GetItem(int Id);
         public abstract List<T> GetItems();
-
+      
         public abstract void Validate();
     }
 }

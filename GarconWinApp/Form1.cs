@@ -14,27 +14,17 @@ namespace GarconWinApp
         private bool isConfirmed;
         private MenuService menuService = new MenuService();
         private OrderService orderService = new OrderService();
+        OrderSummaryService orderSummaryService = new OrderSummaryService();
         public Form1()
         {
             InitializeComponent();
-            ToggleOrderSummary(true);
             PopulateMenuListBox();
             RecalculateTotal();
         }
 
-        private void ToggleOrderSummary(bool isHide)
+        private void ToggleOrderSummary(string orderSummary)
         {
-           
-            if (isHide)
-            {
-                lblOrderSummary.Hide();
-                lblSummary.Hide();
-            } else
-            {
-                lblOrderSummary.Show();
-                lblSummary.Show();
-            }
-            
+            ShowMessage(MessageType.Done, orderSummary);
         }
 
         private void PopulateMenuListBox()
@@ -65,7 +55,7 @@ namespace GarconWinApp
                     orderService.AddItem(new OrderItem((MenuItem)item));
                     OrderItems = orderService.GetItems();
                 }
-                ToggleOrderSummary(true);
+
                 UpdateOrderItems();
                 UncheckedAllSelectedMenuItem();
                 RecalculateTotal();
@@ -141,9 +131,9 @@ namespace GarconWinApp
             return isMenuChecking ? clbMenu.CheckedItems.Count>0 :  OrderItems.Any();
             
         }
-        private void ShowMessage(MessageType messageType)
+        private void ShowMessage(MessageType messageType, string message="")
         {
-            string msg = string.Empty;
+            string msg = message;
             string header = string.Empty;
             switch (messageType)
             {
@@ -158,6 +148,9 @@ namespace GarconWinApp
                 case MessageType.NoOrderAdded:
                     header = "Error";
                     msg = "Please add at least one item to your order.";
+                    break;
+                case MessageType.Done:
+                    header = "All Served! Thank you!";
                     break;
             }
             
@@ -208,9 +201,7 @@ namespace GarconWinApp
             var hasUnservedOrders = OrderItems.Any(c => c.Status != OrderItemStatus.SERVED);
             if (!hasUnservedOrders)
             {
-              
-                ShowBillOutOption();
-                ShowMessage(MessageType.Successful);
+                ProcessBillOutOption();
                 ResetAll();
             }
         }
@@ -224,13 +215,21 @@ namespace GarconWinApp
             UpdateOrderItems();
         }
 
-        private void ShowBillOutOption()
+        private void ProcessBillOutOption()
+        {           
+            orderSummaryService.SetOrderItems(OrderItems);
+            var orderSummary =  orderSummaryService.CalculateOrderSummary();
+            ToggleOrderSummary(orderSummary);
+            UpdateOrderSummary();
+          
+        }
+
+        private void UpdateOrderSummary()
         {
-            ToggleOrderSummary(false);
-            lblSummary.Text = string.Empty;
-            lblSummary.Text = orderService.CalculateOrderSummary();
-
-
+            lbOrderHistory.DataSource = null;
+            lbOrderHistory.DisplayMember = "DisplayMember";
+            lbOrderHistory.ValueMember = "Id";
+            lbOrderHistory.DataSource = orderSummaryService.GetItems();
         }
     }
 }

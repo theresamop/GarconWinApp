@@ -31,6 +31,7 @@ namespace GarconWinApp.Enums
         NoItemChecked,
         NoOrderAdded,
         Eror,
-        Successful
+        Successful,
+        Done
     }
 }
