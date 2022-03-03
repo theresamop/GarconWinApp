@@ -92,7 +92,7 @@ namespace GarconWinApp
             TotalOrderPrice = 0;
             foreach (var orderItem in OrderItems)
             {
-                TotalOrderPrice += ((OrderItem)orderItem).Item.ItemPrice;
+                TotalOrderPrice += orderItem.GetItemPriceWTax(orderItem.Item);
             }
             lblTotal.Text = TotalOrderPrice.ToString("0.00");
         }

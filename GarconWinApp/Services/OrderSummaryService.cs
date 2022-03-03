@@ -29,16 +29,18 @@ namespace GarconWinApp.Services
                 grandTotalTax += orderItem.GetTax();
             }
             var svcCharge = (grandTotalPrice * 5) / 100;
+            var grandTotalWTaxPrice = grandTotalPrice + grandTotalTax;
             sbText.Append("--------------------------" + Environment.NewLine);
 
             sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
-            sbText.Append("Service Charge (5%): " + svcCharge.ToString("0.00") + Environment.NewLine);
             sbText.Append("Total Tax: " + grandTotalTax + Environment.NewLine);
-            sbText.Append("Grand Total: " + (grandTotalPrice + grandTotalTax + svcCharge).ToString("0.00"));
+            sbText.Append("Service Charge (5%): " + svcCharge.ToString("0.00") + Environment.NewLine);
+
+            sbText.Append("Grand Total: " + (grandTotalWTaxPrice + svcCharge).ToString("0.00"));
 
             OrderSummary orderSummary = new OrderSummary()
             {
-                TotalPrice = grandTotalPrice,
+                TotalPrice = grandTotalWTaxPrice,
                 TotalQuantity = _orderItems.Count,
                 InclusiveTax = grandTotalTax,
                 ServiceCharge = svcCharge,
