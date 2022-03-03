@@ -22,7 +22,7 @@ namespace GarconWinApp.Models
         public DateTime OrderDate { get; set; } = DateTime.Now;
         public string DisplayMember{ get { return String.Format("Date Ordered: {0} - Grand Total Amount: {1} - No of Items: {2}", 
             OrderDate.ToString("dd/MM/yyyy hh:mm"),
-            (TotalPrice + TotalServiceCharge).ToString("0.00"),
+            (TotalPrice + TotalServiceCharge).ToString(ApplicationSettings.CurrencyFormat),
             TotalQuantity); } }
     }
 }

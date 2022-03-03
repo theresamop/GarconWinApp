@@ -15,14 +15,13 @@ namespace GarconWinApp.Models
         private int _id;
         private MenuItem _item = new MenuItem();
         
-        public string DisplayMember {  get { return Item.Name + " - " + GetItemPriceWTax(Item).ToString("0.00") + " - " + Status.ToString(); } }
+        public string DisplayMember {  get { return Item.Name + " - " + GetItemPriceWTax(Item).ToString(ApplicationSettings.CurrencyFormat) + " - " + Status.ToString(); } }
 
-        public string OrderItemSummaryDisplayMember { get { return String.Format("{0} - {1} (Net Price: {2} w/ tax: {3} at ({4}%)", 
+        public string OrderItemSummaryDisplayMember { get { return String.Format("{0} - {1} (Net Price: {2} w/ tax: {3})", 
             Item.Name, 
-            Item.GetItemPriceWTax(Item.ItemPrice).ToString("0.00"), 
-            Item.ItemPrice.ToString("0.00"), 
-            GetTax(Item).ToString("0.00"),
-            ApplicationSettings.InclusiveTax.ToString("0.00")); } }
+            Item.GetItemPriceWTax(Item.ItemPrice).ToString(ApplicationSettings.CurrencyFormat), 
+            Item.ItemPrice.ToString(ApplicationSettings.CurrencyFormat), 
+            GetTax(Item).ToString(ApplicationSettings.CurrencyFormat)); } }
         
         public int Id { get => _id; set => _id = value; }
         public OrderItemStatus Status { get => _status; set => _status = value; }

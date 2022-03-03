@@ -94,7 +94,7 @@ namespace GarconWinApp
             {
                 TotalOrderPrice += orderItem.GetItemPriceWTax(orderItem.Item);
             }
-            lblTotal.Text = TotalOrderPrice.ToString("0.00");
+            lblTotal.Text = TotalOrderPrice.ToString(ApplicationSettings.CurrencyFormat);
         }
         private void UncheckedAllSelectedMenuItem()
         {
@@ -210,7 +210,7 @@ namespace GarconWinApp
         {
             UncheckedAllSelectedMenuItem();
             OrderItems.Clear();
-            lblTotal.Text = "0.00";
+            lblTotal.Text ="0.00";
             btnConfirmOrder.Enabled = true;
             UpdateOrderItems();
         }

@@ -18,7 +18,7 @@ namespace GarconWinApp
             Description = "Meat Dish (beef) with peanut sauce",
             IsAvailability = true,
             IsChefRecommendation = false,
-            ItemPrice = 200,
+            ItemPrice = 1200.55m,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Kare Kare",
             PrepTimeInMinutes = 3

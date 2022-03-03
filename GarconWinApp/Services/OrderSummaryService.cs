@@ -22,6 +22,9 @@ namespace GarconWinApp.Services
             StringBuilder sbText = new StringBuilder();
             decimal grandTotalPrice = 0;
             decimal grandTotalTax = 0;
+
+            sbText.Append("Value Added Tax is at " + ApplicationSettings.InclusiveTax+ "%" + Environment.NewLine);
+            sbText.Append("_____________________" + Environment.NewLine);
             foreach (var orderItem in _orderItems)
             {
                 sbText.Append(orderItem.OrderItemSummaryDisplayMember + Environment.NewLine);
@@ -32,14 +35,14 @@ namespace GarconWinApp.Services
             var grandTotalWTaxPrice = grandTotalPrice + grandTotalTax;
             sbText.Append("--------------------------" + Environment.NewLine);
 
-            sbText.Append("Total Amount: " + grandTotalPrice + Environment.NewLine);
-            sbText.Append("Total Tax: " + grandTotalTax + Environment.NewLine);
+            sbText.Append("Total Amount: " + grandTotalPrice.ToString(ApplicationSettings.CurrencyFormat) + Environment.NewLine);
+            sbText.Append("Total VAT: " + grandTotalTax.ToString(ApplicationSettings.CurrencyFormat) + Environment.NewLine);
             sbText.Append(string.Format("Service Charge({0}%): {1} " , 
                 ApplicationSettings.ServiceCharge, 
-                svcCharge.ToString("0.00"))
+                svcCharge.ToString(ApplicationSettings.CurrencyFormat))
                 + Environment.NewLine);
-
-            sbText.Append("Grand Total: " + (grandTotalWTaxPrice + svcCharge).ToString("0.00"));
+            sbText.Append("==========================" + Environment.NewLine);
+            sbText.Append("Grand Total: " + (grandTotalWTaxPrice + svcCharge).ToString(ApplicationSettings.CurrencyFormat));
 
             OrderSummary orderSummary = new OrderSummary()
             {
