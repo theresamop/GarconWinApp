@@ -21,8 +21,7 @@ namespace GarconWinApp
             ItemPrice = 200,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Beef Kare Kare",
-            PrepTimeInMinutes = 3,
-            ItemTax = 12
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem MC2 = new MenuItem()
@@ -34,8 +33,7 @@ namespace GarconWinApp
             ItemPrice = 270,
             MenuItemType = MenuType.MAINCOURSE,
             Name = "Pork Sinigang",
-            PrepTimeInMinutes = 3,
-            ItemTax = 12
+            PrepTimeInMinutes = 3
         };
 
         public static readonly MenuItem MC3 = new MenuItem()
@@ -64,8 +62,7 @@ namespace GarconWinApp
             ItemPrice = 100,
             MenuItemType = MenuType.APPETIZER,
             Name = "French Fries",
-            PrepTimeInMinutes = 1,
-            ItemTax = 8
+            PrepTimeInMinutes = 1
         };
 
         public static readonly MenuItem AP2 = new MenuItem()

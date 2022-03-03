@@ -15,11 +15,14 @@ namespace GarconWinApp.Models
 
         public decimal TotalPrice { get; set; }
 
-        public decimal InclusiveTax { get; set; }
+        public decimal TotalInclusiveTax { get; set; }
 
-        public decimal ServiceCharge { get; set; }
+        public decimal TotalServiceCharge { get; set; }
         public int Id { get; set; }
         public DateTime OrderDate { get; set; } = DateTime.Now;
-        public string DisplayMember{ get { return "Date Ordered: " + OrderDate.ToString("dd/MM/yyyy hh:mm") + " - Total Amount: " + TotalPrice.ToString("0.00") + " - No of Items: " + TotalQuantity; } }
+        public string DisplayMember{ get { return String.Format("Date Ordered: {0} - Grand Total Amount: {1} - No of Items: {2}", 
+            OrderDate.ToString("dd/MM/yyyy hh:mm"),
+            (TotalPrice + TotalServiceCharge).ToString("0.00"),
+            TotalQuantity); } }
     }
 }
